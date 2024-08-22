@@ -8,10 +8,10 @@
  * 
  * @param spectrogram The spectrogram to display.
  */
-void Visualizer::displaySpectrum(Spectrogram* spectrogram) const {
+void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* windowHandler) const {
     // Set the display size to 200 characters
     int dispSize = 200;
-    
+
     // Print a carriage return to move the cursor to the beginning of the line
     printf("\r");
 

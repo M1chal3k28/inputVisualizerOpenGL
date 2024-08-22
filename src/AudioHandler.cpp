@@ -49,7 +49,7 @@ int AudioHandler::paCallback(
     (void)statusFlags;
 
     callbackData->spectrogram->performFFT(in);
-    callbackData->visualizer->displaySpectrum(callbackData->spectrogram);
+    callbackData->visualizer->displaySpectrum(callbackData->spectrogram, callbackData->windowHandler);
 
     return paContinue;
 }
@@ -93,7 +93,8 @@ void AudioHandler::initializeInputParameters(PaStreamParameters* inputParameters
  */
 void AudioHandler::startStream(
     Spectrogram* spectrogram, 
-    Visualizer* visualizer
+    Visualizer* visualizer,
+    WindowHandler* windowHandler
 ) {
     PaStreamParameters inputParameters;
     initializeInputParameters(&inputParameters);
@@ -108,7 +109,8 @@ void AudioHandler::startStream(
         paCallback,
         new CallBackData {
             spectrogram,
-            visualizer
+            visualizer,
+            windowHandler
         }
     );
     checkErr(err);

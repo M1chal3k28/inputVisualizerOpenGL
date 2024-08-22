@@ -2,8 +2,15 @@
 #include <Visualizer.hpp>
 #include <Spectrogram.hpp>
 #include <AudioHandler.hpp>
+#include <WindowHandler.hpp>
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
 int main() {
+    // Create a WindowHandler object
+    WindowHandler windowHandler(WINDOW_WIDTH, WINDOW_HEIGHT, "Music Visualizer");
+
     // Create a Spectrogram object with a buffer size of FRAMES_PER_BUFFER
     Spectrogram spectrogram(FRAMES_PER_BUFFER);
     
@@ -14,10 +21,14 @@ int main() {
     AudioHandler audioHandler;
 
     // Start the audio stream, passing the spectrogram and visualizer objects as arguments
-    audioHandler.startStream(&spectrogram, &visualizer);
+    audioHandler.startStream(&spectrogram, &visualizer, &windowHandler);
     
-    // Pause the program for 10 seconds using the Pa_Sleep function
-    Pa_Sleep(10000);
+    // Main loop
+    while (!windowHandler.windowShouldClose())
+    {
+        // Swap buffers
+        windowHandler.render();
+    }
     
     // Stop the audio stream
     audioHandler.stopStream();

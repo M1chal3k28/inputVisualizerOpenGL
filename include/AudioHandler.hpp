@@ -6,6 +6,7 @@
 #include <portaudio.h>
 #include <Spectrogram.hpp>
 #include <Visualizer.hpp>
+#include <WindowHandler.hpp>
 
 // Define the AudioHandler class
 class AudioHandler {
@@ -17,7 +18,7 @@ public:
     ~AudioHandler();
     
     // Start the audio stream
-    void startStream(Spectrogram* spectrogram, Visualizer* visualizer);
+    void startStream(Spectrogram* spectrogram, Visualizer* visualizer, WindowHandler* windowHandler);
     
     // Stop the audio stream
     void stopStream();
@@ -28,6 +29,7 @@ private:
     struct CallBackData {
         Spectrogram* spectrogram;
         Visualizer* visualizer;
+        WindowHandler* windowHandler;
     };
     
     // Private member functions

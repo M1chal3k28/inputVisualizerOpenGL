@@ -7,6 +7,7 @@
  */
 
 #include <Spectrogram.hpp>
+#include <WindowHandler.hpp>
 
 /**
  * Class for visualizing spectrograms.
@@ -22,5 +23,5 @@ public:
      * 
      * @param spectrogram The spectrogram to display.
      */
-    void displaySpectrum(Spectrogram* spectrogram) const;
+    void displaySpectrum(Spectrogram* spectrogram, WindowHandler* windowHandler) const;
 };
