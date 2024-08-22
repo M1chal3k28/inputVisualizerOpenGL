@@ -1,4 +1,5 @@
 #include <AudioHandler.hpp>
+#include <cmath>
 
 /**
  * Constructor for the AudioHandler class.
@@ -47,6 +48,15 @@ int AudioHandler::paCallback(
     (void)outputBuffer;
     (void)timeInfo;
     (void)statusFlags;
+
+    float vol_r = 0.0, vol_l = 0.0;
+
+    for(unsigned int i = 0; i < framesPerBuffer * 2; i+=2) {
+        vol_r = std::max(vol_r, std::abs(in[i]));
+        vol_l = std::max(vol_l, std::abs(in[i + 1]));
+    }
+
+    callbackData->windowHandler->setHeight(std::max(vol_r, vol_l));
 
     callbackData->spectrogram->performFFT(in);
     callbackData->visualizer->displaySpectrum(callbackData->spectrogram, callbackData->windowHandler);

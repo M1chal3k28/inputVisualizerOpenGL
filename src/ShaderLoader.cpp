@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 ShaderLoader::ShaderLoader(const char* vertex_file_path, const char* fragment_file_path) {
     // Create the shaders

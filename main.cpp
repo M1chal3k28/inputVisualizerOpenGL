@@ -8,6 +8,8 @@
 #define WINDOW_HEIGHT 600
 
 int main() {
+    srand (time(NULL));
+
     // Create a WindowHandler object
     WindowHandler windowHandler(WINDOW_WIDTH, WINDOW_HEIGHT, "Music Visualizer");
 
@@ -19,7 +21,7 @@ int main() {
     
     // Create an AudioHandler object
     AudioHandler audioHandler;
-
+    
     // Start the audio stream, passing the spectrogram and visualizer objects as arguments
     audioHandler.startStream(&spectrogram, &visualizer, &windowHandler);
     
