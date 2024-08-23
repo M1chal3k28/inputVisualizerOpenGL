@@ -36,6 +36,9 @@ public:
     
     // Get the size of the spectrogram
     int getSpectroSize();  // Size of the spectrogram
+
+    // Smooth the output of the spectrogram
+    void smoothOutput(int windowSize);
     
 private:
     // Private member variables

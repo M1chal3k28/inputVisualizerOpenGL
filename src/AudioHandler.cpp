@@ -50,6 +50,7 @@ int AudioHandler::paCallback(
     (void)statusFlags;
 
     callbackData->spectrogram->performFFT(in);
+    // callbackData->spectrogram->smoothOutput(5);
     callbackData->visualizer->displaySpectrum(callbackData->spectrogram, callbackData->windowHandler);
 
     return paContinue;

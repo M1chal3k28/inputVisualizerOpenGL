@@ -20,6 +20,7 @@ WindowHandler::WindowHandler(int width, int height, const char* title, int barCo
         exit(1);
     }
 
+    printf("Creating window\n");
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
@@ -62,12 +63,12 @@ void WindowHandler::render() {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(this->programId);
 
-    for(float i = 1; i < barCount + 1; i++) {
+    for(float i = 0; i < barCount + 1; i++) {
         Bar bar({
-            -1.0f + i / (barCount / 2.0f), -1.1f, 0.0f,  // left bottom 
-            -1.0f + i / (barCount / 2.0f), -1.0f + heights[i - 1], 0.0f,  // left top
-            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.1f, 0.0f,  // right bottom
-            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.0f + heights[i - 1], 0.0f   // right top
+            -1.0f + i / (barCount / 2.0f),                           -1.0f,                                                     0.0f,    // left bottom 
+            -1.0f + i / (barCount / 2.0f),                           std::max(std::min(-1.0f + heights[i - 1], 1.0f), -0.995f), 0.0f,    // left top
+            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.0f,                                                     0.0f,    // right bottom
+            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), std::max(std::min(-1.0f + heights[i - 1], 1.0f), -0.995f), 0.0f     // right top
         },
         {
             1, 0, 3,
@@ -96,6 +97,9 @@ void WindowHandler::renderBar(Bar * bar) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     // Draw
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -107,6 +111,10 @@ void WindowHandler::renderBar(Bar * bar) {
 
 void WindowHandler::setHeights(std::vector<float> heights) {
     this->heights = heights;
+}
+
+std::vector<float>& WindowHandler::getHeights() {
+    return this->heights;
 }
 
 int WindowHandler::getBarCount() {

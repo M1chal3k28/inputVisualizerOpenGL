@@ -1,4 +1,6 @@
 #include <Spectrogram.hpp>
+#include <vector>
+#include <iostream>
 
 // Constructor for the Spectrogram class
 Spectrogram::Spectrogram(int bufferSize) : bufferSize(bufferSize) {
@@ -12,13 +14,14 @@ Spectrogram::Spectrogram(int bufferSize) : bufferSize(bufferSize) {
         exit(EXIT_FAILURE);
     }
 
+    printf("Initializing FFT\n");
     // Create a plan for the FFT
     plan = fftw_plan_r2r_1d(
         bufferSize,
         in,
         out,
-        FFTW_R2HC,
-        FFTW_ESTIMATE
+        FFTW_DHT,
+        FFTW_EXHAUSTIVE
     );
 
     // Calculate the starting index and size of the spectrogram
@@ -40,13 +43,26 @@ Spectrogram::~Spectrogram() {
 
 // Perform a fast Fourier transform on the input data
 void Spectrogram::performFFT(const float * input) {
-    // Copy the input data to the input array
-    for(int i = 0; i < bufferSize; i++) {
+    double maxVal = 0.0;
+    for(int i = 0; i < bufferSize; i+=2) {
         in[i] = (double)input[i];
     }
-    // Execute the FFT plan
     fftw_execute(plan);
 }
+
+void Spectrogram::smoothOutput(int windowSize) {
+    std::vector<double> smoothed(spectroSize, 0.0);
+    for(int i = 0; i < spectroSize; i++) {
+        int start = std::max(0, i - windowSize);
+        int end = std::min(spectroSize - 1, i + windowSize);
+        for(int j = start; j <= end; j++) {
+            smoothed[i] += out[j];
+        }
+        smoothed[i] /= (end - start + 1);
+    }
+    std::copy(smoothed.begin(), smoothed.end(), out);
+}
+
 
 // Get the output of the spectrogram
 double* Spectrogram::getOutput() {

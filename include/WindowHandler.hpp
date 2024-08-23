@@ -14,6 +14,7 @@ public:
     void renderBar(Bar * bar);
     void setHeights(std::vector<float> heights);
     int getBarCount();
+    std::vector<float>& getHeights();
 private:
     GLFWwindow* window;
     GLuint programId;

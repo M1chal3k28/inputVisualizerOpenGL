@@ -14,16 +14,20 @@
 void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* windowHandler) const {
     // Set the display size to 200 characters
     int dispSize = windowHandler->getBarCount();
-    std::vector<float> heights;
+    std::vector<float> heights = windowHandler->getHeights();
 
     // Loop over each character in the display
     for(int i = 0; i < dispSize; i++) {
         // Calculate the proportion of the spectrogram's size that this character represents
-        double proportion = i / (double) dispSize;
+        double proportion = log10(1 + 9 * (i / (double)dispSize)) / log10(10);;
         
         // Get the frequency value at this point in the spectrogram
         double freq = spectrogram->getOutput()[(int)(spectrogram->getStartIndex() + proportion * spectrogram->getSpectroSize())];
-        heights.push_back(std::fabs((float)freq) * 2.0f);
+        if(heights[i] < freq) {
+            heights[i] = freq;
+        } else {
+           heights[i] -= 0.05 * (1 + heights[i]);
+        }
     }
     
     windowHandler->setHeights(heights);

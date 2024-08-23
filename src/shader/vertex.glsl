@@ -1,7 +1,11 @@
 #version 330 core
-layout(location = 0) in vec3 vertexPosition_modelspace;
+layout (location = 0) in vec3 aPos; // Współrzędne wierzchołków
+layout (location = 1) in float aHeight; // Wysokość prostokąta
 
-void main() {
-    gl_Position.xyz = vertexPosition_modelspace;
-    gl_Position.w = 1.0;
+out float height; // Przekazanie wysokości do fragment shadera
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0); // Przekształć pozycję wierzchołka do współrzędnych ekranu
+    height = aHeight; // Przekazanie wysokości
 }
