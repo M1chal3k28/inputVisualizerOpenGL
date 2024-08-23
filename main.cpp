@@ -7,11 +7,13 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
+#define BAR_COUNT 20
+
 int main() {
     srand (time(NULL));
 
     // Create a WindowHandler object
-    WindowHandler windowHandler(WINDOW_WIDTH, WINDOW_HEIGHT, "Music Visualizer");
+    WindowHandler windowHandler(WINDOW_WIDTH, WINDOW_HEIGHT, "Music Visualizer", BAR_COUNT);
 
     // Create a Spectrogram object with a buffer size of FRAMES_PER_BUFFER
     Spectrogram spectrogram(FRAMES_PER_BUFFER);

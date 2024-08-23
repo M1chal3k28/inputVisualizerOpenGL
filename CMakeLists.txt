@@ -11,6 +11,7 @@ add_executable(musicVisualizer
     src/AudioHandler.cpp
     src/WindowHandler.cpp
     src/ShaderLoader.cpp
+    src/Bar.cpp
     src/glad/glad.c
 )
 include_directories(musicVisualizer ${CMAKE_SOURCE_DIR}/include)

@@ -1,4 +1,7 @@
 #include <Visualizer.hpp>
+#include <Bar.hpp>
+#include <iostream>
+#include <vector>
 
 /**
  * Displays the spectrum of the given spectrogram.
@@ -10,10 +13,8 @@
  */
 void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* windowHandler) const {
     // Set the display size to 200 characters
-    int dispSize = 200;
-
-    // Print a carriage return to move the cursor to the beginning of the line
-    printf("\r");
+    int dispSize = windowHandler->getBarCount();
+    std::vector<float> heights;
 
     // Loop over each character in the display
     for(int i = 0; i < dispSize; i++) {
@@ -22,27 +23,8 @@ void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* window
         
         // Get the frequency value at this point in the spectrogram
         double freq = spectrogram->getOutput()[(int)(spectrogram->getStartIndex() + proportion * spectrogram->getSpectroSize())];
-
-        // Print a block character whose height corresponds to the frequency value
-        if(freq < 0.125) {
-            printf("▁"); // lowest block
-        } else if(freq < 0.25) {
-            printf("▂"); // low block
-        } else if(freq < 0.375) {
-            printf("▃"); // medium-low block
-        } else if(freq < 0.5) {
-            printf("▄"); // medium block
-        } else if(freq < 0.625) {
-            printf("▅"); // medium-high block
-        } else if(freq < 0.75) {
-            printf("▆"); // high block
-        } else if(freq < 0.875) {
-            printf("▇"); // very high block
-        } else {
-            printf("█"); // highest block
-        }
+        heights.push_back(std::fabs((float)freq) * 10.0f);
     }
-
-    // Flush the output buffer to ensure the characters are printed immediately
-    fflush(stdout);
+    
+    windowHandler->setHeights(heights);
 }
