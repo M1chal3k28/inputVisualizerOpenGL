@@ -23,7 +23,7 @@ void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* window
         
         // Get the frequency value at this point in the spectrogram
         double freq = spectrogram->getOutput()[(int)(spectrogram->getStartIndex() + proportion * spectrogram->getSpectroSize())];
-        heights.push_back(std::fabs((float)freq) * 10.0f);
+        heights.push_back(std::fabs((float)freq) * 2.0f);
     }
     
     windowHandler->setHeights(heights);

@@ -62,20 +62,18 @@ void WindowHandler::render() {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(this->programId);
 
-    int ind = 0;
-    for(int i = 0; i < 20; i++) {
+    for(float i = 1; i < barCount + 1; i++) {
         Bar bar({
-            -1.0f + i / 10.0f, -1.1f, 0.0f,  // left bottom 
-            -1.0f + i / 10.0f, -1.0f + heights[ind], 0.0f,  // left top
-            (-0.9f - 0.1f / barCount) + i / 10.0f, -1.1f, 0.0f,  // right bottom
-            (-0.9f - 0.1f / barCount) + i / 10.0f, -1.0f + heights[ind], 0.0f   // right top
+            -1.0f + i / (barCount / 2.0f), -1.1f, 0.0f,  // left bottom 
+            -1.0f + i / (barCount / 2.0f), -1.0f + heights[i - 1], 0.0f,  // left top
+            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.1f, 0.0f,  // right bottom
+            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.0f + heights[i - 1], 0.0f   // right top
         },
         {
             1, 0, 3,
             0, 2, 3
         });
         this->renderBar(&bar);
-        ind++;
     }
 
     glfwSwapBuffers(window);

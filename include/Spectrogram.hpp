@@ -13,7 +13,7 @@
 #define FRAMES_PER_BUFFER 512  // Number of frames per buffer
 #define NUM_CHANNELS 2  // Number of audio channels (stereo)
 
-#define SPECTRO_FREQ_START 20  // Starting frequency of the spectrogram
+#define SPECTRO_FREQ_START 200 // Starting frequency of the spectrogram
 #define SPECTRO_FREQ_END 20000  // Ending frequency of the spectrogram
 
 // Define the Spectrogram class
