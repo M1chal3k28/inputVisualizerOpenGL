@@ -45,19 +45,13 @@ WindowHandler::WindowHandler(int width, int height, const char* title, int barCo
         glUseProgram(this->programId);
     }
 
-    // Set lighting
-    // Ustawienie pozycji światła
-glUniform3f(glGetUniformLocation(this->programId, "lightPos"), 1.2f, 1.0f, 2.0f);
+    // Znajdź lokalizację uniformów
+    GLint rectSizeLoc = glGetUniformLocation(this->programId, "rectSize");
+    GLint radiusLoc = glGetUniformLocation(this->programId, "radius");
 
-// Ustawienie pozycji kamery (widoku)
-glUniform3f(glGetUniformLocation(this->programId, "viewPos"), 1.2f, 1.0f, 2.0f);
-
-// Ustawienie koloru światła
-glUniform3f(glGetUniformLocation(this->programId, "lightColor"), 1.0f, 1.0f, 1.0f);
-
-// Ustawienie koloru obiektu
-glUniform3f(glGetUniformLocation(this->programId, "objectColor"), 1.0f, 0.5f, 0.31f);
-
+    // Ustaw wartości uniformów
+    glUniform2f(rectSizeLoc, 1.0f, 0.75f); // Przykładowy rozmiar prostokąta
+    glUniform1f(radiusLoc, 1.0f);          // Przykładowa wartość zaokrąglenia rogów
 
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);

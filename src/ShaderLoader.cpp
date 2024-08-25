@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <iostream>
 
 ShaderLoader::ShaderLoader(const char* vertex_file_path, const char* fragment_file_path) {
     // Create the shaders
@@ -19,6 +20,7 @@ ShaderLoader::ShaderLoader(const char* vertex_file_path, const char* fragment_fi
 		VertexShaderCode = sstr.str();
 		VertexShaderStream.close();
 	}else{
+		std::cout << std::filesystem::current_path() << std::endl;
 		printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
         exit(-1);
 	}
