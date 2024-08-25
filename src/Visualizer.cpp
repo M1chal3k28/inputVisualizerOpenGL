@@ -19,7 +19,7 @@ void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* window
     // Loop over each character in the display
     for(int i = 0; i <= dispSize; i++) {
         // Calculate the proportion of the spectrogram's size that this character represents
-        double proportion = log10(1 + 9 * (i / (double)dispSize)) / log10(10);;
+        double proportion = log10(1 + 9 * (i / (double)dispSize)) / log10(10);
         
         // Get the frequency value at this point in the spectrogram
         double freq = spectrogram->getOutput()[(int)(spectrogram->getStartIndex() + proportion * spectrogram->getSpectroSize())];
