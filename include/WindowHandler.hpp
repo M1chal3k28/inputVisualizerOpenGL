@@ -4,6 +4,12 @@
 #include <ShaderLoader.hpp>
 #include <Bar.hpp>
 
+// For multithreading
+#include <iostream>
+#include <future>
+#include <vector>
+#include <memory.h>
+
 class WindowHandler {
 public:
     WindowHandler(int width, int height, const char* title, int barCount);
@@ -11,7 +17,7 @@ public:
     GLFWwindow* getWindow();
     void render();
     bool windowShouldClose();
-    void renderBar(Bar * bar);
+    void renderBars(std::vector<std::shared_ptr<Bar>> & bars);
     void setHeights(std::vector<float> heights);
     int getBarCount();
     std::vector<float>& getHeights();

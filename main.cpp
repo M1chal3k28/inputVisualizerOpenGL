@@ -7,7 +7,7 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-#define BAR_COUNT 30
+#define BAR_COUNT 64
 
 int main() {
     srand (time(NULL));

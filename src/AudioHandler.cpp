@@ -1,5 +1,8 @@
 #include <AudioHandler.hpp>
 #include <cmath>
+#include <iostream>
+#include <future>
+#include <vector>
 
 /**
  * Constructor for the AudioHandler class.
@@ -49,9 +52,13 @@ int AudioHandler::paCallback(
     (void)timeInfo;
     (void)statusFlags;
 
-    callbackData->spectrogram->performFFT(in);
-    // callbackData->spectrogram->smoothOutput(5);
-    callbackData->visualizer->displaySpectrum(callbackData->spectrogram, callbackData->windowHandler);
+    std::vector<std::future<void>> futures;
+
+    futures.push_back(std::async(std::launch::async, [=]() {
+        callbackData->spectrogram->performFFT(in);
+        // callbackData->spectrogram->smoothOutput(5);
+        callbackData->visualizer->displaySpectrum(callbackData->spectrogram, callbackData->windowHandler);
+    }));
 
     return paContinue;
 }

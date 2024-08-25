@@ -21,7 +21,7 @@ Spectrogram::Spectrogram(int bufferSize) : bufferSize(bufferSize) {
         in,
         out,
         FFTW_DHT,
-        FFTW_MEASURE
+        FFTW_EXHAUSTIVE
     );
 
     // Calculate the starting index and size of the spectrogram

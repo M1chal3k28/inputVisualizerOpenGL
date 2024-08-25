@@ -45,6 +45,20 @@ WindowHandler::WindowHandler(int width, int height, const char* title, int barCo
         glUseProgram(this->programId);
     }
 
+    // Set lighting
+    // Ustawienie pozycji światła
+glUniform3f(glGetUniformLocation(this->programId, "lightPos"), 1.2f, 1.0f, 2.0f);
+
+// Ustawienie pozycji kamery (widoku)
+glUniform3f(glGetUniformLocation(this->programId, "viewPos"), 1.2f, 1.0f, 2.0f);
+
+// Ustawienie koloru światła
+glUniform3f(glGetUniformLocation(this->programId, "lightColor"), 1.0f, 1.0f, 1.0f);
+
+// Ustawienie koloru obiektu
+glUniform3f(glGetUniformLocation(this->programId, "objectColor"), 1.0f, 0.5f, 0.31f);
+
+
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     glGenVertexArrays(1, &VAO);
@@ -63,6 +77,7 @@ void WindowHandler::render() {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(this->programId);
 
+    std::vector<std::shared_ptr<Bar>> bars;
     for(float i = 0; i <= barCount; i++) {
         // Calculate the position of the bar
         float xLeft = -1.0f + i / (barCount / 2.0f);
@@ -80,8 +95,13 @@ void WindowHandler::render() {
             0, 1, 2, // Triangle 1
             2, 1, 3  // Triangle 2
         });
-        this->renderBar(&bar);
+        std::shared_ptr<Bar> barPtr = std::make_shared<Bar>(bar);
+
+        bars.push_back(std::move(barPtr));
     }
+
+    // Render the bars
+    this->renderBars(bars);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -91,24 +111,26 @@ bool WindowHandler::windowShouldClose() {
     return glfwWindowShouldClose(window);
 }
 
-void WindowHandler::renderBar(Bar * bar) {
+void WindowHandler::renderBars(std::vector<std::shared_ptr<Bar>> & bars) {
     // Allocate memory for drawing the bar
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-    glBufferData(GL_ARRAY_BUFFER, bar->getVertices().size() * sizeof(float), bar->getVertices().data(), GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, bar->getIndices().size() * sizeof(unsigned int), bar->getIndices().data(), GL_STATIC_DRAW);
+    for (auto barptr : bars) {
+        Bar* bar = barptr.get();
+        glBufferData(GL_ARRAY_BUFFER, bar->getVertices().size() * sizeof(float), bar->getVertices().data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, bar->getIndices().size() * sizeof(unsigned int), bar->getIndices().data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
-    // Draw
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+        // Draw
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
     // Clear
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

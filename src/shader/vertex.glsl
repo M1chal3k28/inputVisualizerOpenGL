@@ -7,5 +7,5 @@ out float vHeight; // Przekazanie wysokości do shadera fragmentów
 void main()
 {
     gl_Position = vec4(position, 1.0);
-    vHeight = 1.2 + position.y;
+    vHeight = 1.4 + position.y;
 }
