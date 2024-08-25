@@ -1,16 +1,17 @@
 #version 330 core
-out vec3 color;
 
-in float height; // Wysokość przekazana z vertex shadera
+in float vHeight;  // Otrzymana wysokość z shadera wierzchołków
+out vec4 fragColor;
 
-void main(){
-    // Zakres wysokości dla spectrogramu
-    float minHeight = 0.0;  // Minimalna wysokość
-    float maxHeight = 10.0; // Maksymalna wysokość (zmień według potrzeb)
+void main()
+{
+    // Kolor na podstawie wysokości
+    // Możesz tu użyć dowolnej funkcji, np. interpolacji pomiędzy dwoma kolorami
+    vec3 lowColor = vec3(0.0, 1.0, 0.0);  // Kolor dla niskiej wysokości (np. niebieski)
+    vec3 highColor = vec3(1.0, 0.0, 0.0); // Kolor dla wysokiej wysokości (np. czerwony)
 
-    // Normalizacja wysokości do zakresu 0.0 - 1.0
-    float heightFactor = clamp((height - minHeight) / (maxHeight - minHeight), 1.0, 1.0);
+    // Interpolacja koloru na podstawie wysokości
+    vec3 color = mix(lowColor, highColor, vHeight);
 
-    // Mieszanie koloru zielonego i czerwonego
-    color = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 0.0), heightFactor);
+    fragColor = vec4(color, 1.0); // Ustawienie końcowego koloru fragmentu
 }

@@ -6,7 +6,7 @@
 
 WindowHandler::WindowHandler(int width, int height, const char* title, int barCount) {
     this->barCount = barCount;
-    this->heights = std::vector<float>(barCount, -1.0f);
+    this->heights = std::vector<float>(barCount + 1, -1.0f);
     this->indices = nullptr;
     this->vertices = nullptr;
     this->window = nullptr;
@@ -63,16 +63,22 @@ void WindowHandler::render() {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(this->programId);
 
-    for(float i = 0; i < barCount + 1; i++) {
+    for(float i = 0; i <= barCount; i++) {
+        // Calculate the position of the bar
+        float xLeft = -1.0f + i / (barCount / 2.0f);
+        float xRight = (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f);
+        float height = std::max(std::min(-1.0f + heights[i], 1.0f), -0.995f);
+        
+        // Create a Bar object
         Bar bar({
-            -1.0f + i / (barCount / 2.0f),                           -1.0f,                                                     0.0f,    // left bottom 
-            -1.0f + i / (barCount / 2.0f),                           std::max(std::min(-1.0f + heights[i - 1], 1.0f), -0.995f), 0.0f,    // left top
-            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), -1.0f,                                                     0.0f,    // right bottom
-            (-1.0f - 1 / (barCount / 2.0f)) + i / (barCount / 2.0f), std::max(std::min(-1.0f + heights[i - 1], 1.0f), -0.995f), 0.0f     // right top
+            xLeft, -1.0f, 0.0f,    // left bottom 
+            xLeft, height, 0.0f,   // left top
+            xRight, -1.0f, 0.0f,   // right bottom
+            xRight, height, 0.0f   // right top
         },
         {
-            1, 0, 3,
-            0, 2, 3
+            0, 1, 2, // Triangle 1
+            2, 1, 3  // Triangle 2
         });
         this->renderBar(&bar);
     }

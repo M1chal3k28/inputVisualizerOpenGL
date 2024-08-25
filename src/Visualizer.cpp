@@ -17,7 +17,7 @@ void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* window
     std::vector<float> heights = windowHandler->getHeights();
 
     // Loop over each character in the display
-    for(int i = 0; i < dispSize; i++) {
+    for(int i = 0; i <= dispSize; i++) {
         // Calculate the proportion of the spectrogram's size that this character represents
         double proportion = log10(1 + 9 * (i / (double)dispSize)) / log10(10);;
         
@@ -26,7 +26,7 @@ void Visualizer::displaySpectrum(Spectrogram* spectrogram, WindowHandler* window
         if(heights[i] < freq) {
             heights[i] = freq;
         } else {
-           heights[i] -= 0.05 * (1 + heights[i]);
+           heights[i] -= 0.05 * (1 * heights[i]);
         }
     }
     

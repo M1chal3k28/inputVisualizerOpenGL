@@ -21,7 +21,7 @@ Spectrogram::Spectrogram(int bufferSize) : bufferSize(bufferSize) {
         in,
         out,
         FFTW_DHT,
-        FFTW_EXHAUSTIVE
+        FFTW_MEASURE
     );
 
     // Calculate the starting index and size of the spectrogram
@@ -44,7 +44,7 @@ Spectrogram::~Spectrogram() {
 // Perform a fast Fourier transform on the input data
 void Spectrogram::performFFT(const float * input) {
     double maxVal = 0.0;
-    for(int i = 0; i < bufferSize; i+=2) {
+    for(int i = 0; i < bufferSize; i++) {
         in[i] = (double)input[i];
     }
     fftw_execute(plan);
